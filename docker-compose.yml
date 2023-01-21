@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  #Mongodb 
+  mongo_db:
+    container_name: db
+    image: mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    
+  crawler:
+    image: crawler
+    build: ./search
+    depends_on: 
+      - mongo_db  
+
+  index:
+    image: index
+    build: ./index
+    depends_on:
+      crawler:
+        condition: service_completed_successfully
+        
+  query_processor:
+    image: query_processor
+    build: ./query_processor
+    ports:
+      - '8501:8501'
+    depends_on:
+      index:
+        condition: service_completed_successfully

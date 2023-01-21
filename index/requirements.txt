@@ -1,0 +1,7 @@
+scrapy 
+pymongo[srv]
+scrapy-playwright 
+playwright 
+streamlit
+nltk
+numpy
