@@ -11,7 +11,7 @@ def process(doc):
     ps = PorterStemmer() 
     sw = stopwords.words('english')
     
-    for char in doc['title']:
+    for char in doc['description']:
         if char not in string.punctuation:
             puncs_removed += char
 

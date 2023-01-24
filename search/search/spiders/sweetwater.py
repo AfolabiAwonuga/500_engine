@@ -30,16 +30,19 @@ class SweetwaterSpider(scrapy.Spider):
     def parse_product(self, response):
         loader = ItemLoader(item = SweetItem(), selector = response)
         store = 'Sweetwater'
-        # image =  response.css('img[itemprop = image]::attr(src)').get()
-        # try:
-        #     desc = response.css('div.webtext-block.webtext-block--mixed-content p::text').get()
-        # except:
+        
+        desc = response.css('div.webtext-block.webtext-block--mixed-content p::text').get()
+        title = response.css('h1.product__name span::text').getall()
+        if desc != None:
+            description = desc
+        else:
+            description = ''.join(title)    
 
         loader.add_value('store', store)
         loader.add_css('image', 'img[itemprop = image]::attr(src)')
         loader.add_css('title', 'h1.product__name span')
         loader.add_value('url', response.url)
         loader.add_css('price', 'div.product-price--final price dollars')
-        loader.add_css('description', 'div.webtext-block p')
+        loader.add_value('description', description)
 
         yield loader.load_item()
