@@ -21,7 +21,8 @@
 
 3. Inverted index: This module stores a mapping of each unique **Term** found in the "discription" of each equipment scrapped, to the locations in which the **Term** occurs in the database and its **Term Frequency(TF)** in every location it occurs. This information is then stored in the **MongoDb** database as a new collection. The inverted index is the first step to implementing **Ranked Retrival** which is implemented in the final module. The Inverted index module can be found in the "index" directory.
 
-4. Query processor: The query processor is responsible for processing user queries. By calculating the **Term Frequency(TF)/Inverse Document Frequency(IDF)** scores for each term in a query, the system is able to retrieve from the **MongoDb** database the most relevant documents based on the query. The Query processor module can be found in the "query_processor" directory.
+4. Query processor: The query processor is responsible for processing user queries at the backend and a ui built using **streamlit**. By calculating the **Term Frequency(TF)/Inverse Document Frequency(IDF)** scores for each term in a query, the system is able to retrieve from the **MongoDb** database the most relevant documents based on the query. The Query processor module can be found in the "query_processor" directory.
+
 ## Tech Stack
 - Python 
 - MongoDb
@@ -54,5 +55,5 @@ Run with docker compose
 
 ## Demo
 
-Insert gif or link to demo
+For demo purposes 500 Engine is deployed on an aws **EC2 INSTANCE** which can he accessed [here]()
 
