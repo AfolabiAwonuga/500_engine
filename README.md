@@ -7,9 +7,9 @@
 
 
 
-![Alt text](1.png)
-![Alt text](2.png)
-![Alt text](3.png)
+![Alt text](screenshots/1.png)
+![Alt text](screenshots/2.png)
+![Alt text](screenshots/4.png)
 
 
 ## Modules
@@ -55,5 +55,5 @@ Run with docker compose
 
 ## Demo
 
-For demo purposes 500 Engine is deployed on an aws **EC2 INSTANCE** which can he accessed [here]()
+For demo purposes 500 Engine is deployed on an aws **EC2 INSTANCE** which can be accessed [here]()
 
