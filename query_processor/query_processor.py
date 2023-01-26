@@ -110,7 +110,7 @@ def find(conn):
                         st.write(' ')
 
                     with col2:
-                        st.image(data['image'], width = 100)
+                        st.image(data['image'])
                    
                     with col3:
                         st.write(' ')
@@ -157,7 +157,7 @@ def find(conn):
                         st.write(' ')
 
                     with col2:
-                        st.image(data['image'], width = 100)
+                        st.image(data['image'])
                    
                     with col3:
                         st.write(' ')
