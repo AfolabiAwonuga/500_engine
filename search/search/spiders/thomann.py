@@ -14,7 +14,7 @@ class ThomannSpider(scrapy.Spider):
    
 
     def start_requests(self):
-        
+    
         yield scrapy.Request('https://www.thomann.de/gb/componente_sistem-500.html', 
                             meta = dict(
                             playwright =  True,
@@ -33,14 +33,17 @@ class ThomannSpider(scrapy.Spider):
                                 meta = dict(
                                 playwright =  True,
                                 playwright_include_page = True,
-                                playwright_page_methods = [PageMethod("wait_for_selector", "div.product-listings")]
+                                playwright_page_methods = [PageMethod("wait_for_selector", "div.product-listings")],
+                                proxy = f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
                         ), callback=self.parse_page, headers = thom_headers)
 
 
     def parse_page(self, response):
         for product in response.css('div.product a.product__content::attr(href)'):
             yield response.follow(product.get(), callback = self.parse_product,
-                                 headers = thom_headers)
+                                 headers = thom_headers, meta = {
+            "proxy": f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
+            })
 
 
     def parse_product(self, response):

@@ -8,6 +8,9 @@ from scrapy.utils.reactor import install_reactor
 install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')  
 
 API_KEY = 'db803e566bb5ba1e75789254fb3b8bdb'
+meta = {
+            "proxy": f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
+            }
 
 class SweetwaterSpider(scrapy.Spider):
     name = 'sweetwater'
@@ -15,9 +18,7 @@ class SweetwaterSpider(scrapy.Spider):
     # start_urls = ['https://www.sweetwater.com/c1036--500_Series?all']
 
     def start_requests(self):
-        meta = {
-            "proxy": f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
-            }
+        
         yield scrapy.Request('https://www.sweetwater.com/c1036--500_Series?all', 
                             headers = sweet_headers, meta=meta
                             )
@@ -25,7 +26,7 @@ class SweetwaterSpider(scrapy.Spider):
    
     def parse(self, response):
         for link in response.css('h2.product-card__name a::attr(href)'):
-            yield response.follow(link.get(), callback = self.parse_product, headers = sweet_headers)
+            yield response.follow(link.get(), callback = self.parse_product, headers = sweet_headers, meta=meta)
         
         # next_page = response.urljoin(response.css('li.next a::attr(href)').get())
         # if next_page:
