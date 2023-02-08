@@ -7,6 +7,8 @@ from scrapy.utils.reactor import install_reactor
 
 install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')  
 
+API_KEY = 'db803e566bb5ba1e75789254fb3b8bdb'
+
 class ThomannSpider(scrapy.Spider):
     name = 'thomann'
    
@@ -17,8 +19,9 @@ class ThomannSpider(scrapy.Spider):
                             meta = dict(
                             playwright =  True,
                             playwright_include_page = True,
-                            playwright_page_methods = [PageMethod("wait_for_selector", "div.search-pagination__pages")]
-                        ), headers = thom_headers 
+                            playwright_page_methods = [PageMethod("wait_for_selector", "div.search-pagination__pages")],
+                            proxy = f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
+                        ), headers = thom_headers
                     )
    
    

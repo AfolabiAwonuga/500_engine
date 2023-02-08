@@ -7,14 +7,19 @@ from scrapy.utils.reactor import install_reactor
 
 install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')  
 
+API_KEY = 'db803e566bb5ba1e75789254fb3b8bdb'
+
 class SweetwaterSpider(scrapy.Spider):
     name = 'sweetwater'
     # allowed_domains = ['sweetwater.com']
     # start_urls = ['https://www.sweetwater.com/c1036--500_Series?all']
 
     def start_requests(self):
+        meta = {
+            "proxy": f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
+            }
         yield scrapy.Request('https://www.sweetwater.com/c1036--500_Series?all', 
-                            headers = sweet_headers
+                            headers = sweet_headers, meta=meta
                             )
 
    
