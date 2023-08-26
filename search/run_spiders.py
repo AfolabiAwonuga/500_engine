@@ -6,9 +6,11 @@ from twisted.internet import reactor, defer
 from scrapy.crawler import CrawlerRunner
 
 
-
 def run():
+    """
+    Run the Scrapy crawlers for SweetwaterSpider and ThomannSpider.
 
+    """
     settings = get_project_settings()
     configure_logging()
     runner = CrawlerRunner(settings)
@@ -21,9 +23,6 @@ def run():
 
     crawl()
     reactor.run() 
-
-
-
 
 if __name__ == '__main__':
     run()
