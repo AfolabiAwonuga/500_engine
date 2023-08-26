@@ -9,31 +9,66 @@ install_reactor('twisted.internet.asyncioreactor.AsyncioSelectorReactor')
 
 API_KEY = 'db803e566bb5ba1e75789254fb3b8bdb'
 meta = {
-            "proxy": f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
-            }
+    "proxy": f"http://scraperapi:{API_KEY}@proxy-server.scraperapi.com:8001"
+    }
+
 
 class SweetwaterSpider(scrapy.Spider):
-    name = 'sweetwater'
-    # allowed_domains = ['sweetwater.com']
-    # start_urls = ['https://www.sweetwater.com/c1036--500_Series?all']
+    """
+    Spider for crawling product information from Sweetwater website.
 
-    def start_requests(self):
+    Attributes:
+        name (str): The name of the spider.
+
+    """
+    name = 'sweetwater'
+
+    def start_requests(
+            self
+    ):
+        """
+        Generates the initial requests to crawl the Sweetwater website.
+
+        Yields:
+            scrapy.Request: Initial request to start crawling.
+
+        """
         
         yield scrapy.Request('https://www.sweetwater.com/c1036--500_Series?all', 
                             headers = sweet_headers, meta=meta
                             )
+        
+    def parse(
+            self, 
+            response
+    ):
+        """
+        Parses the product listing page to extract product links.
 
-   
-    def parse(self, response):
+        Args:
+            response (scrapy.http.Response): The response from the request.
+
+        Yields:
+            scrapy.Request: Requests for individual product pages.
+
+        """
         for link in response.css('h2.product-card__name a::attr(href)'):
             yield response.follow(link.get(), callback = self.parse_product, headers = sweet_headers, meta=meta)
-        
-        # next_page = response.urljoin(response.css('li.next a::attr(href)').get())
-        # if next_page:
-        #     yield scrapy.Request(next_page, callback = self.parse_product)
 
-   
-    def parse_product(self, response):
+    def parse_product(
+            self, 
+            response
+    ):
+        """
+        Parses an individual product page to extract product details.
+
+        Args:
+            response (scrapy.http.Response): The response from the request.
+
+        Yields:
+            SweetItem: Extracted product information.
+
+        """
         loader = ItemLoader(item = SweetItem(), selector = response)
         store = 'Sweetwater'
         
