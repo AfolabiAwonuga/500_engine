@@ -7,7 +7,19 @@ import streamlit as st
 import numpy as np
 import string 
 
-def find(conn):
+def find(
+        conn: str
+) -> None:
+    """
+    Displays search results based on a processed query using an inverted index.
+
+    Args:
+        conn (str): Connection string for MongoDB.
+
+    Returns:
+        None
+
+    """
     st.title('500 Engine')
     search = st.text_input('Search')
     
@@ -28,7 +40,7 @@ def find(conn):
     doc_id = []
     total_docs = corpus.count_documents({})
 
-    #       PRE PROCESSING   
+    #PRE PROCESSING   
     tab1, tab2 = st.tabs(["Sweetwater", "Thomann"])  
     if search:
         for char in search:
@@ -78,7 +90,6 @@ def find(conn):
 
         
         for doc in doc_id:
-            # st.write(doc)
             data = corpus.find_one({'_id':doc},{'_id':0})
             
             if data['store'] == 'Sweetwater':
@@ -102,7 +113,6 @@ def find(conn):
                         except:
                             pass    
                           
-                        # st.write('Category:', data['category'])  
             else:
                 with tab2:
                     col1, col2, col3 = st.columns(3)
@@ -124,8 +134,6 @@ def find(conn):
                         except:
                             pass  
                         
-
-
     else:
         for data in corpus.find({},{'_id':0}):
             if data['store'] == 'Sweetwater':
@@ -149,7 +157,6 @@ def find(conn):
                         except:
                             pass   
                           
-                        # st.write('Category:', data['category'])  
             else:
                 with tab2:
                     col1, col2, col3 = st.columns(3)
@@ -172,6 +179,7 @@ def find(conn):
                             pass  
 
 
-conn = 'mongodb://db:27017'
 if __name__ == '__main__':
-	find(conn)
+    conn = 'mongodb://db:27017'
+    find(conn)
+

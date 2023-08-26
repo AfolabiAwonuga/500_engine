@@ -1,13 +1,24 @@
+import string
 import scrapy
 import requests
-from itemloaders.processors import TakeFirst, MapCompose
+from typing import List, Tuple
 from w3lib.html import remove_tags 
-import string
+from itemloaders.processors import TakeFirst, MapCompose
 
 
-def price_sweet(lst):
-    
-    # for price in lst:
+def price_sweet(
+        lst: List[str]
+) -> Tuple[str, str]:
+    """
+    Convert a price from USD to GBP.
+
+    Args:
+        lst (list): A list containing the price as a string.
+
+    Returns:
+        tuple: A tuple containing the price in USD and GBP.
+
+    """
     price = ''
     for char in lst[0]:
         if char not in string.punctuation:
@@ -21,7 +32,19 @@ def price_sweet(lst):
     return (price_usd, price_gbp)    
     
 
-def price_thomann(lst):
+def price_thomann(
+        lst: List[str]
+) -> Tuple[str, str]:
+    """
+    Convert a price from GBP to USD.
+
+    Args:
+        lst (list): A list containing the price as a string.
+
+    Returns:
+        tuple: A tuple containing the price in USD and GBP.
+
+    """
     striped = lst[0].strip().replace('£', '')
 
     price = ''
@@ -36,11 +59,36 @@ def price_thomann(lst):
     
     return (price_usd, price_gbp) 
 
-def join(lst):
+
+def join(
+        lst: List[str]
+) -> str:
+    """
+    Joins a list of strings into a single string.
+
+    Args:
+        lst (list): A list of strings to be joined.
+
+    Returns:
+        str: The concatenated string.
+
+    """
     return ''.join(lst)
 
-class SweetItem(scrapy.Item):
 
+class SweetItem(scrapy.Item):
+    """
+    Item class to store scraped product information from Sweetwater.
+
+    Attributes:
+        store (scrapy.Field): The store name.
+        image (scrapy.Field): The image URL of the product.
+        title (scrapy.Field): The title of the product.
+        url (scrapy.Field): The URL of the product page.
+        price (scrapy.Field): The price of the product.
+        description (scrapy.Field): The description of the product.
+
+    """
     store = scrapy.Field(
         output_processor = TakeFirst()
     )
@@ -71,7 +119,18 @@ class SweetItem(scrapy.Item):
 
 
 class ThomannItem(scrapy.Item):
+    """
+    Item class to store scraped product information from Thomann.
 
+    Attributes:
+        store (scrapy.Field): The store name.
+        image (scrapy.Field): The image URL of the product.
+        title (scrapy.Field): The title of the product.
+        url (scrapy.Field): The URL of the product page.
+        price (scrapy.Field): The price of the product.
+        description (scrapy.Field): The description of the product.
+
+    """
     store = scrapy.Field(
         output_processor = TakeFirst()
     )
